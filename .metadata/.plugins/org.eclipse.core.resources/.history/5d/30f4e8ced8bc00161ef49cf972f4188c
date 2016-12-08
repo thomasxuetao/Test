@@ -1,0 +1,14 @@
+package com.abc.wave;
+
+public class StartMain {
+	
+	public static void main(String[] args){
+		try {
+			convertAudioFiles("", "");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
