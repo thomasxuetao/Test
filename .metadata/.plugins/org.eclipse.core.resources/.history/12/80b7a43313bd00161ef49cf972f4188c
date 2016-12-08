@@ -1,0 +1,46 @@
+package com.abc.wave;
+
+import java.awt.AWTEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class GUI extends JFrame{
+
+	private static final long serialVersionUID = 1L;
+	
+	private JLabel jComLabel;
+	private JTextField jComText;
+	private JButton jOpenButton;
+	private JButton jCloseButton;
+	private JPanel jComPanel;
+	
+	
+	public GUI(){
+		init();
+		
+		this.setSize(800,600);
+		this.setVisible(true);
+		this.setLocationRelativeTo(null);
+		
+		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+	}
+	
+	public void init(){
+		jComLabel = new JLabel("´®¿Ú");
+		jComText = new JTextField("COM1");
+		jOpenButton = new JButton("OPEN");
+		jCloseButton = new JButton("Close");
+		
+		jComPanel = new JPanel();
+		jComPanel.add(jComLabel);
+		jComPanel.add(jComText);
+		jComPanel.add(jOpenButton);
+		jComPanel.add(jCloseButton);
+		
+		this.add(jComPanel);
+	}
+}

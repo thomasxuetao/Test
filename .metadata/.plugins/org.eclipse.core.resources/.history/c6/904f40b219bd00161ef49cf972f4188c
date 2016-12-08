@@ -1,0 +1,89 @@
+package com.abc.wave;
+
+import java.awt.AWTEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class MainFrame extends JFrame implements Observer{
+
+	private static final long serialVersionUID = 1L;
+	
+	private JLabel jComLabel;
+	private JTextField jComText;
+	private JButton jOpenButton;
+	private JButton jCloseButton;
+	private JPanel jComPanel;
+	
+	
+	public MainFrame(){
+		init();
+		
+		this.setSize(800,600);
+		this.setVisible(true);
+		this.setLocationRelativeTo(null);
+		
+		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+	}
+	
+	public void init(){
+		jComLabel = new JLabel("´®¿Ú");
+		jComText = new JTextField("COM1");
+		jOpenButton = new JButton("OPEN");
+		jCloseButton = new JButton("Close");
+		
+		jComPanel = new JPanel();
+		jComPanel.add(jComLabel);
+		jComPanel.add(jComText);
+		jComPanel.add(jOpenButton);
+		jComPanel.add(jCloseButton);
+		
+		this.add(jComPanel);
+		
+		jOpenButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				initSerial(jComText.getText());
+				
+			}
+		});
+		
+		jCloseButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+			}
+		});
+
+	}
+	
+	public void initSerial(String str){
+		StartMain.serial = new SerialReader();
+		serial.openSerialPort(str);
+	}
+	
+	public void processWindowEvent(WindowEvent e){
+		if(e.getID() == WindowEvent.WINDOW_CLOSING){
+			System.exit(0);
+		}else{
+			super.processWindowEvent(e);
+		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
+}

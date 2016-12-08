@@ -1,0 +1,27 @@
+package com.abc.wave;
+
+import java.awt.AWTEvent;
+
+import javax.swing.JFrame;
+
+public class GUI extends JFrame{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public GUI(){
+		init();
+		
+		this.setSize(800,600);
+		this.setVisible(true);
+		this.setLocationRelativeTo(null);
+		
+		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+	}
+	
+	public void init(){
+		
+	}
+}

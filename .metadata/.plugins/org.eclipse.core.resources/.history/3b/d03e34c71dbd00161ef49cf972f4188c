@@ -1,0 +1,26 @@
+package com.abc.wave;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+public class StartMain {
+	public static MainFrame frame;
+	public static SerialReader serial;
+	
+	
+
+	public static void main(String[] args) {
+		try {
+//			convertAudioFiles("rawwavs/outpcm", "rawwavs/outwav.wav");
+//			PlaySounds thread = new PlaySounds("/rawwavs/outwav.wav");
+//			new Thread(thread).start();
+
+			frame = new MainFrame();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
