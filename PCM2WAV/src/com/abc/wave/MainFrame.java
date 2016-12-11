@@ -1,6 +1,7 @@
 package com.abc.wave;
 
 import java.awt.AWTEvent;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -22,17 +24,20 @@ public class MainFrame extends JFrame implements Observer {
 
 	byte[] message;
 	int iWavIndex = 0;
-	
+
 	private JLabel jComLabel;
 	private JTextField jComText;
 	private JButton jOpenButton;
 	private JButton jCloseButton;
 	private JButton jSingButton;
+	private JButton jClearButton;
 	private JTextArea jMsgArea;
+	private JScrollPane jMsgPane;
 	private JPanel jComPanel;
+	private JLabel jStateLabel;
 
 	public MainFrame() {
-		message = new byte[1024*500];
+		message = new byte[1024 * 500];
 		init();
 
 		this.setSize(500, 300);
@@ -48,7 +53,13 @@ public class MainFrame extends JFrame implements Observer {
 		jOpenButton = new JButton("打开串口");
 		jCloseButton = new JButton("关闭串口");
 		jSingButton = new JButton("播放WAV声音");
+		jClearButton = new JButton("清空数据");
 		jMsgArea = new JTextArea();
+		jMsgArea.setLineWrap(true);
+
+		jStateLabel = new JLabel(" ");
+
+		jMsgPane = new JScrollPane(jMsgArea);
 
 		jComPanel = new JPanel();
 		jComPanel.add(jComLabel);
@@ -56,16 +67,18 @@ public class MainFrame extends JFrame implements Observer {
 		jComPanel.add(jOpenButton);
 		jComPanel.add(jCloseButton);
 		jComPanel.add(jSingButton);
-//		jComPanel.add(jMsgArea);
+		jComPanel.add(jClearButton);
 
-		this.add(jComPanel);
+		this.add(jComPanel, BorderLayout.NORTH);
+		this.add(jMsgPane, BorderLayout.CENTER);
+		this.add(jStateLabel, BorderLayout.SOUTH);
 
 		jOpenButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				initSerial(jComText.getText());
-
+				jStateLabel.setText("串口已打开！");
 			}
 		});
 
@@ -77,7 +90,7 @@ public class MainFrame extends JFrame implements Observer {
 					StartMain.serial.close();
 					StartMain.serial = null;
 				}
-
+				jStateLabel.setText("串口已关闭！");
 			}
 		});
 
@@ -86,7 +99,7 @@ public class MainFrame extends JFrame implements Observer {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					if(iWavIndex != 0){
+					if (iWavIndex != 0) {
 						convertAudioFiles("outwav.wav");
 					}
 				} catch (Exception e) {
@@ -94,10 +107,18 @@ public class MainFrame extends JFrame implements Observer {
 					e.printStackTrace();
 				}
 
-
 				PlaySounds thread = new PlaySounds("/outwav.wav");
 				new Thread(thread).start();
 				iWavIndex = 0;
+			}
+		});
+
+		jClearButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				jMsgArea.setText("");
 			}
 		});
 
@@ -122,15 +143,20 @@ public class MainFrame extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		byte[] msg = (byte[])arg;
-		System.arraycopy(msg, 0, message, iWavIndex, msg.length);	
+		byte[] msg = (byte[]) arg;
+		System.arraycopy(msg, 0, message, iWavIndex, msg.length);
 		iWavIndex += msg.length;
-
-
+		StringBuilder strmsg = new StringBuilder();
+		for (int i = 0; i < msg.length; i++) {
+			strmsg.append(Integer.toHexString(msg[i]&0xFF));
+			strmsg.append(" ");
+		}
+		jMsgArea.append(strmsg.toString());
 	}
 
-	private void convertAudioFiles(String target)
-			throws Exception {
+
+
+	private void convertAudioFiles(String target) throws Exception {
 		FileOutputStream fos = new FileOutputStream(target);
 
 		// 计算长度
