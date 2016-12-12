@@ -4,6 +4,7 @@ package com.sin.java.waveaccess.test;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import com.sin.java.plot.Plot;
 import com.sin.java.plot.PlotFrame;
@@ -30,7 +31,7 @@ public class TestMain {
 	}
 
 	// 绘制波形文件
-	public static void drawWaveFile(String filename) {
+	public static void drawWaveFile(String filename) throws IOException {
 		WaveFileReader reader = new WaveFileReader(filename);
 		//
 		String[] pamss = new String[] { "-r", "-g", "-b" };
@@ -55,19 +56,19 @@ public class TestMain {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		try {
-			fis = new FileOutputStream("rawwavs/outpcm");
+			fis = new FileOutputStream("rawwavs/outpcm.pcm");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		bis = new BufferedOutputStream(fis);
 		
-//		drawWaveFile("rawwavs/wav_40_16_1_pcm.wav");
+		drawWaveFile("rawwavs/wav_40_16_1_pcm.wav");
 //		drawWaveFile("rawwavs/wav_40_16_2_pcm.wav");
 		
-		drawWaveFile("rawwavs/wav_20_8_1_pcm.wav");
+//		drawWaveFile("rawwavs/wav_20_8_1_pcm.wav");
 //		drawWaveFile("rawwavs/wav_20_8_2_pcm.wav");
 	}
 }

@@ -58,7 +58,7 @@ public class TestMain {
 
 	public static void main(String[] args) throws IOException {
 		try {
-			fis = new FileOutputStream("rawwavs/outpcm.pcm");
+			fis = new FileOutputStream("rawwavs/outpcm");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
